@@ -14,14 +14,12 @@ $VERSION = '0.51';
 sub new {
     my $class = shift;
     my $self  = {};
-    my $art;
-
-    croak "usage: ${class}->new(ARTICLE-OBJ)" unless @_ == 1;
-    $art = shift;
-
+    my $art   = shift;
+    my $subj  = shift;
+    
     bless $self, $class;
 
-    $self->subject($art->subject);
+    $self->subject($subj);
     $self->volume($art->size);
     $self->articles(1);
 

@@ -404,18 +404,24 @@ sub _next_nntp_article {
 
     $self->error(0);
 
-    my $article = shift @{$self->{'news_scan_article_list'}};
-    return undef unless defined $article;
+    # retry if we need to skip cancelled articles
+    while (@{$self->{'news_scan_article_list'}}) {
+        my $article = shift @{$self->{'news_scan_article_list'}};
 
-    my $fh = IO::File->new_tmpfile;
-    unless (defined $fh) {
-        return $self->error("Could not open temporary file: $!\n");
+        my $fh = IO::File->new_tmpfile;
+        unless (defined $fh) {
+            return $self->error("Could not open temporary file: $!\n");
+        }
+
+        my $lines = $client->article($article);
+        next unless ref $lines;
+
+        print $fh @$lines;
+
+        $fh->seek(0, SEEK_SET);
+
+        return $fh;
     }
-
-    print $fh @{ $client->article($article) };
-    $fh->seek(0, SEEK_SET);
-
-    $fh;
 }
 
 sub _next_spool_article {
@@ -432,7 +438,7 @@ sub _next_spool_article {
         }
 
         $self->{'news_scan_article_list'}
-            = [ grep { -f "$spool/$_" } readdir DIR ];
+            = [ grep { -f "$spool/$_" && -s _ } readdir DIR ];
     }
 
     $self->error(0);
@@ -528,7 +534,19 @@ sub collect {
     }
 
     local $_;
-    for (grep { not -f "$spool/$_" } @{$client->listgroup}) {
+
+    my %seen;
+    if (open SEEN, "$spool/.seen") {
+        while (<SEEN>) {
+            chomp;
+
+            $seen{$_} = 1;
+        }
+
+        close SEEN;
+    }
+
+    for (grep { !-f "$spool/$_" && !$seen{$_} } @{$client->listgroup}) {
         unless (open ART, ">$spool/$_") {
             return $self->error("Failed to save article");
         }
@@ -622,7 +640,11 @@ sub add_poster {
     $poster->sig_lines($poster->sig_lines + $art->sig_lines);
 }
 
-sub posters { \%{ $_[0]->{'news_scan_posters'} } }
+sub posters {
+    my %posters = %{ $_[0]->{'news_scan_posters'} };
+
+    \%posters;
+}
 
 ## crossposts bookkeeping stuff
 sub add_crossposts {
@@ -643,7 +665,11 @@ sub add_crossposts {
     $self->error(0);
 }
 
-sub crossposts { $_[0]->{'news_scan_xposts'} }
+sub crossposts {
+    my %xposts = %{ $_[0]->{'news_scan_xposts'} };
+
+    \%xposts;
+}
 
 ## thread bookkeeping stuff
 sub add_to_thread {
@@ -667,7 +693,7 @@ sub add_to_thread {
         $thread = $threads->{$subj};
     }
     else {
-        $threads->{$subj} = new News::Scan::Thread $art;
+        $threads->{$subj} = new News::Scan::Thread $art, $subj;
 
         return;
     }
@@ -688,7 +714,13 @@ sub add_to_thread {
     $thread->sig_lines($thread->sig_lines + $art->sig_lines);
 }
 
-sub threads { \%{ $_[0]->{'news_scan_threads'} } }
+sub threads {
+    my %threads = %{ $_[0]->{'news_scan_threads'} };
+
+    \%threads;
+}
+
+sub DESTROY {}
 
 1;
 

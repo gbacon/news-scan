@@ -1,4 +1,4 @@
-#! /usr/bin/perl -w
+#! /usr/local/bin/perl -w
 
 use strict;
 
@@ -23,8 +23,10 @@ my @exclude = (
     'perlfaq-suggestions\@mox\.perl\.com',
 );
 
+my $HOME = $ENV{HOME} || '/';
+my $spool = "$HOME/spool/comp.lang.perl.misc";
 my $scan = new News::Scan Group   => 'comp.lang.perl.misc',
-                          Spool   => '/home/gbacon/spool/comp.lang.perl.misc',
+                          Spool   => $spool,
                           Period  => 7,
                           Aliases => \%aliases,
                           Exclude => \@exclude,

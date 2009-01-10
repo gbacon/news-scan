@@ -21,7 +21,7 @@ sub new {
     $self->{'news_scan_poster_message_ids'} = [];
 
     bless $self, $class;
-    $self->address($art->author->address);
+    $self->address($art->author);
 
     $self->attrib($art->author->format);
 
@@ -59,12 +59,46 @@ sub address {
 sub attrib {
     my $self = shift;
 
-    if (@_) {
-        $self->{'news_scan_poster_attrib'} = shift;
+    return $self->{'news_scan_poster_attrib'}
+        if $self->{'news_scan_poster_attrib'};
+
+    my $addr = $self->{'news_scan_poster_address'};
+    return unless $addr;
+
+    my $phrase  = $addr->phrase  || '';
+    my $address = $addr->address || '';
+    my $comment = $addr->comment || '';
+
+    my $attrib = '';
+
+    for ($phrase, $address, $comment) {
+        s/^\s+//;
+        s/\s+$//;
+    }
+
+    if ($phrase) {
+        if ($comment) {
+            # expect $comment surrounded by ()
+            $attrib = "$phrase $comment";
+        }
+        else {
+            $attrib = $phrase;
+        }
     }
     else {
-        return $self->{'news_scan_poster_attrib'};
+        $attrib = $comment;
+        $attrib =~ s/^\(//;
+        $attrib =~ s/\)$//;
     }
+
+    if ($attrib) {
+        $attrib .= " <$address>";
+    }
+    else {
+        $attrib = $address;
+    }
+
+    $self->{'news_scan_poster_attrib'} = $attrib;
 }
 
 sub message_ids {

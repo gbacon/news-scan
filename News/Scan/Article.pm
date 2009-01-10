@@ -15,6 +15,8 @@ sub new {
     my $group = pop;
     my $self  = $class->SUPER::new(@_);
 
+    bless $self, $class;
+
     $self->group($group);
     $self->calculate_sizes;
 
@@ -31,6 +33,7 @@ sub in_period {
     my $period = shift(@_) * 60 * 60 * 24;
 
     my $date = $self->head->get('Date');
+
     return 0 unless (defined $date and $date);
     chomp $date;
 
@@ -146,9 +149,12 @@ sub calculate_sizes {
 sub author {
     my $self = shift;
 
-    my $from = $self->head->get('Reply-To')
-               || $self->head->get('From')
-               || $self->head->get('Sender');
+    my $hd = $self->head || return;
+
+    my $from = $hd->get('Reply-To')
+            || $hd->get('From')
+            || $hd->get('Sender')
+            || "";
     chomp $from;
 
     my $addr = ( Mail::Address->parse($from) )[0];
@@ -158,7 +164,7 @@ sub author {
     }
 
     unless (defined $addr and ref $addr) {
-        return undef;
+        return;
     }
     else {
         return $addr;
@@ -187,9 +193,10 @@ sub newsgroups {
     my $self = shift;
 
     my $hdr = $self->head->get('Newsgroups') || '';
-    chomp $hdr;
+    $hdr =~ s/^\s+//;
+    $hdr =~ s/\s+$//;
 
-    split /,+/, $hdr;
+    split /\s*,+\s*/, $hdr;
 }
 
 sub size        { $_[0]->{'news_scan_article_size'} }

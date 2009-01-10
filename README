@@ -51,7 +51,7 @@ Bugs, Problems, Suggestions
 ---------------------------
 
 Please send any suggestions, bug reports, complaints, et cetera to
-Greg Bacon <gbacon@cs.uah.edu>.
+Greg Bacon <gbacon@hiwaay.net>.
 
 Acknowledgements
 ----------------
@@ -66,9 +66,12 @@ for all his helpful thoughts, comments, and bug reports.
 Chaim Frenkel <chaimf@cris.com> has also contributed immensely with his
 extremely helpful comments, suggestions, and questions.
 
+Thanks to Henrik Gemal, Gerrit P. Haase, and Oyvind Gronnesby for
+helpful suggestions and bug reports.
+
 Copyright
 ---------
 
-Copyright (c) 1997 Greg Bacon. All rights reserved.
+Copyright (c) 1997-2002 Greg Bacon.
 This library is free software; you can distribute and/or modify it under
 the same terms as Perl itself.

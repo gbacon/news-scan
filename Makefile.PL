@@ -98,7 +98,7 @@ EOF
 ################################################################
 use ExtUtils::MakeMaker;
 
-$VERSION = '0.51';
+$VERSION = '0.52';
 
 sub MY::libscan {
     my($self, $path) = @_;

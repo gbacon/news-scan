@@ -7,8 +7,11 @@ News/Scan/Poster.pm
 News/Scan/Thread.pm
 README
 TODO
+eg/avg-addy
+eg/empty-old
+eg/new-posters
 eg/news-scan
 eg/news-stats
+eg/news-stats.deutsch
 eg/nntpget
-eg/test.dump
-eg/test.stats
+eg/update-posters

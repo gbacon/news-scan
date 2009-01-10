@@ -8,3 +8,7 @@ Revision History for Perl extension News-Scan.
 
 	- fixed some really embarassing bugs
 	- minor changes to the stats script
+
+0.52  Mon Jul 20 10:20:08 CDT 1998
+
+	- added new posters example scripts

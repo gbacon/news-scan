@@ -1,8 +1,12 @@
-#! /usr/local/bin/perl5.00404 -w
+#!/usr/bin/perl -w
+
+# Thank you to Gerrit P. Haase for translating this program's
+# output to German
 
 use strict;
 
 use POSIX;
+
 use News::Scan;
 
 ## subs
@@ -103,32 +107,33 @@ sub print_header {
     my $latest   = strftime "%d %b %Y %H:%M:%S", gmtime($scan->latest);
 
     print <<EOF;
-From: Greg Bacon <gbacon\@cs.uah.edu>
-Newsgroups: $group
-Subject: Statistics for $group
+From: Gerrit P. Haase <gerrit\@familiehaase.de>
+Newsgroup: $group
+Subject: Statistik fuer $group
 
-Following is a summary of articles spanning a $period day period,
-beginning at $earliest GMT and ending at
-$latest GMT.
+Zusammenfassung von Artikeln im Zeitraum von $period Tagen,
+erster Artikel in dem Zeitraum $earliest GMT
+und letzter Artikel $latest GMT.
 
-Notes
-=====
+Anmerkungen
+===========
 
-    - A line in the body of a post is considered to be original if it
-      does *not* match the regular expression /$quote_re/.
-    - All text after the last cut line (/^-- \$/) in the body is
-      considered to be the author's signature.
-    - The scanner prefers the Reply-To: header over the From: header
-      in determining the "real" e-mail address and name.
-    - Original Content Rating (OCR) is the ratio of the original content
-      volume to the total body volume.
-    - Find the News-Scan distribution on the CPAN!
+    - Eine Zeile im Body wird als Original betrachtet wenn sie
+      *nicht* den regulaeren Ausdruck /$quote_re/ trifft.
+    - Jeder Text nach dem Sigtrenner (/^-- \$/) im Body wird als
+      Signatur des Authors betrachtet.
+    - Der Scanner bevorzugt den Reply-To: Header dem From: Header
+      um die 'echte' Emailadresse herauszufinden.
+    - Original Content Rating ist das Verhältnis des eigenen 
+      Nachrichtentexts zum gesamten Nachrichtentext.
+    - Kommentare an Gerrit P. Haase <gerrit\@familiehaase.de>.
+
+    - Die News-Scan Distribution befindet sich auf CPAN!
       <URL:http://www.perl.com/CPAN/modules/by-module/News/>
-    - Please send all comments to Greg Bacon <gbacon\@cs.uah.edu>.
-    - Copyright (c) 1998 Greg Bacon.  All Rights Reserved.
-      Verbatim copying and redistribution is permitted without royalty;
-      alteration is not permitted.  Redistribution and/or use for any
-      commercial purpose is prohibited.
+    - Copyright (c) 2002 Greg Bacon.
+      Kopieren und Weiterverteilung ist gestattet nur ohne Gebuehr;
+      Aenderungen sind nicht erlaubt.  Weitervertrieb und/oder
+      Nutzung fuer irgend einen kommerziellen Zweck ist verboten.
 
 EOF
 }
@@ -139,8 +144,8 @@ sub excluded {
     my @excludes = @{ $scan->excludes };
     if (@excludes) {
         print <<EOBanner;
-Excluded Posters
-================
+Ausgeschlossene Poster
+======================
 
 EOBanner
 
@@ -177,17 +182,17 @@ sub totals {
     my $ocr = sprintf "%.3f", ($scan->orig_volume / $scan->body_volume);
 
     print <<EOTotals;
-Totals
-======
+Total
+=====
 
-Posters:  $num_posters
-Articles: $num_articles ($num_sigs with cutlined signatures)
+Poster:  $num_posters
+Artikel: $num_articles ($num_sigs mit abgetrennten Signaturen)
 Threads:  $num_threads
-Volume generated: $total_volume kb
-    - headers:    $hdr_volume kb ($hdr_lines lines)
-    - bodies:     $body_volume kb ($body_lines lines)
-    - original:   $orig_volume kb ($orig_lines lines)
-    - signatures: $sig_volume kb ($sig_lines lines)
+generiertes Volumen: $total_volume kb
+    - Header:    $hdr_volume kb ($hdr_lines lines)
+    - Bodies:     $body_volume kb ($body_lines lines)
+    - Original:   $orig_volume kb ($orig_lines lines)
+    - Signaturen: $sig_volume kb ($sig_lines lines)
 
 Original Content Rating: $ocr
 
@@ -232,22 +237,22 @@ sub avgs {
     my $sig_lines = places 1, ($scan->sig_lines / $num_articles);
 
     print <<EOAvgs;
-Averages
-========
+Durschnitt
+==========
 
-Posts per poster: $posts_avg
-    median: $pmed post@{[$pmed == 1 ? "" : "s"]}
-    mode:   $pmode post@{[$pmode == 1 ? "" : "s"]} - $pmode_score poster@{[$pmode_score == 1 ? "" : "s"]}
-    s:      $psd post@{[$psd == 1 ? "" : "s"]}
-Posts per thread: $thr_avg
-    median: $tmed post@{[$tmed == 1 ? "" : "s"]}
-    mode:   $tmode post@{[$tmode == 1 ? "" : "s"]} - $tmode_score thread@{[$tmode_score == 1 ? "" : "s"]}
-    s:      $tsd post@{[$tsd == 1 ? "" : "s"]}
-Message size: $msg bytes
-    - header:     $hdr bytes ($hdr_lines lines)
-    - body:       $body bytes ($body_lines lines)
-    - original:   $orig bytes ($orig_lines lines)
-    - signature:  $sig bytes ($sig_lines lines)
+Postings per Poster: $posts_avg
+    Median:  $pmed Posting@{[$pmed == 1 ? "" : "s"]}
+    Modus:   $pmode Posting@{[$pmode == 1 ? "" : "s"]} - $pmode_score Poster
+    S:       $psd Posting@{[$psd == 1 ? "" : "s"]}
+Postings per Thread: $thr_avg
+    Median:  $tmed Posting@{[$tmed == 1 ? "" : "s"]}
+    Modus:   $tmode Posting@{[$tmode == 1 ? "" : "s"]} - $tmode_score Thread@{[$tmode_score == 1 ? "" : "s"]}
+    S:       $tsd Posting@{[$tsd == 1 ? "" : "s"]}
+Nachrichten Groesse: $msg bytes
+    - Header:     $hdr bytes ($hdr_lines Zeilen)
+    - Body:       $body bytes ($body_lines Zeilen)
+    - Original:   $orig bytes ($orig_lines Zeilen)
+    - Signatur:   $sig bytes ($sig_lines Zeilen)
 
 EOAvgs
 }
@@ -262,8 +267,8 @@ sub top_posters {
 
     ## by posts
     print <<EOBanner;
-Top 10 Posters by Number of Posts
-=================================
+Top 10 Poster nach Anzahl der Postings
+======================================
 
          (kb)   (kb)  (kb)  (kb)
 Posts  Volume (  hdr/ body/ orig)  Address
@@ -278,8 +283,6 @@ EOBanner
 
     $top_total = 0;
     for (@top) {
-        last unless defined $_;
-
         my $vol = sprintf "%5.1f (%5.1f/%5.1f/%5.1f)",
                           $_->volume / 1024,
                           $_->header_volume / 1024,
@@ -292,17 +295,17 @@ EOBanner
         $top_total += $_->articles;
     }
 
-    printf "\nThese posters accounted for %.1f%% of all articles.\n",
+    printf "\nDiese Poster zeichnen verantwortlich fuer %.1f%% aller Artikel.\n",
         100 * $top_total / $scan->articles;
 
     ## by volume
     print <<EOBanner;
 
-Top 10 Posters by Volume
+Top 10 Poster nach Menge
 ========================
 
   (kb)   (kb)  (kb)  (kb)
-Volume (  hdr/ body/ orig)  Posts  Address
+Volume (  hdr/ body/ orig)  Posts  Adresse
 --------------------------  -----  -------
 
 EOBanner
@@ -314,8 +317,6 @@ EOBanner
 
     $top_total = 0;
     for (@top) {
-        last unless defined $_;
-
         my $vol = sprintf "%5.1f (%5.1f/%5.1f/%5.1f)",
                           $_->volume / 1024,
                           $_->header_volume / 1024,
@@ -328,17 +329,17 @@ EOBanner
         $top_total += $_->volume;
     }
 
-    printf "\nThese posters accounted for %.1f%% of the total volume.\n",
+    printf "\nDiese Poster zeichnen verantwortlich fuer %.1f%% des gesamten Volumens.\n",
         100 * $top_total / $scan->volume;
 
     ## top OCR
     print <<EOBanner;
 
-Top 10 Posters by OCR (minimum of five posts)
-==============================================
+Top 10 Posters nach OCR (min. fuenf Postings)
+=============================================
 
          (kb)    (kb)
-OCR      orig /  body  Posts  Address
+OCR      orig /  body  Posts  Adresse
 -----  --------------  -----  -------
 
 EOBanner
@@ -349,8 +350,6 @@ EOBanner
              values %$posters )[0 .. 9];
 
     for (@top) {
-        last unless defined $_;
-
         printf "%.3f  (%5.1f /%5.1f)  %5d  %s\n",
                $_->[1], $_->[0]->orig_volume / 1024,
                $_->[0]->body_volume / 1024,
@@ -360,11 +359,11 @@ EOBanner
     ## bottom OCR
     print <<EOBanner;
 
-Bottom 10 Posters by OCR (minimum of five posts)
+Bottom 10 Poster nach OCR (min. fuenf Postings)
 =================================================
 
          (kb)    (kb)
-OCR      orig /  body  Posts  Address
+OCR      orig /  body  Posts  Adresse
 -----  --------------  -----  -------
 
 EOBanner
@@ -375,36 +374,25 @@ EOBanner
              values %$posters )[0 .. 9];
 
     for (reverse @top) {
-        next unless defined $_;
-
         printf "%.3f  (%5.1f /%5.1f)  %5d  %s\n",
                $_->[1], $_->[0]->orig_volume / 1024,
                $_->[0]->body_volume / 1024,
                $_->[0]->articles, $_->[0]->attrib;
     }
 
-    my $total    = scalar keys %$posters;
-    my $eligible = scalar grep { $_->articles >= 5 } values %$posters;
-    my $pct      = sprintf "%d", 100 * $eligible / $total;
-
-    my $str      = $eligible == 1
-                   ? "One poster ($pct%)"
-                   : "$eligible posters ($pct%)";
-
-    print "\n$str had at least five posts.\n\n";
+    print "\n";
 }
 
 sub top_threads {
     my $scan = shift;
     my @top;
     my $threads = $scan->threads;
-    my $top_total;
     local $_;
 
     ## by posts
     print <<EOBanner;
-Top 10 Threads by Number of Posts
-=================================
+Top 10 Threads nach Anzahl der Postings
+=======================================
 
 Posts  Subject
 -----  -------
@@ -416,22 +404,15 @@ EOBanner
              map  { [ $_, $_->articles ] }
              values %$threads )[0 .. 9];
 
-    $top_total = 0;
     for (@top) {
-        last unless defined $_;
         printf "%5d  %s\n", $_->articles, $_->subject;
-
-        $top_total += $_->articles;
     }
-
-    printf "\nThese threads accounted for %.1f%% of all articles.\n",
-        100 * $top_total / $scan->articles;
 
     ## by volume
     print <<EOBanner;
 
-Top 10 Threads by Volume
-========================
+Top 10 Threads nach Menge
+=========================
 
   (kb)   (kb)  (kb)  (kb)
 Volume (  hdr/ body/ orig)  Posts  Subject
@@ -444,10 +425,7 @@ EOBanner
              map  { [ $_, $_->volume ] }
              values %$threads )[0 .. 9];
 
-    $top_total = 0;
     for (@top) {
-        last unless defined $_;
-
         my $vol = sprintf "%5.1f (%5.1f/%5.1f/%5.1f)",
                           $_->volume / 1024,
                           $_->header_volume / 1024,
@@ -456,18 +434,13 @@ EOBanner
 
         printf "%26s  %5d  %s\n", $vol, $_->articles,
                $_->subject;
-
-        $top_total += $_->volume;
     }
-
-    printf "\nThese threads accounted for %.1f%% of the total volume.\n",
-        100 * $top_total / $scan->volume;
 
     ## top OCR
     print <<EOBanner;
 
-Top 10 Threads by OCR (minimum of five posts)
-==============================================
+Top 10 Threads nach OCR (min. drei Postings)
+============================================
 
          (kb)    (kb)
 OCR      orig /  body  Posts  Subject
@@ -477,12 +450,10 @@ EOBanner
 
     @top = ( sort { $b->[1] <=> $a->[1] }
              map  { [ $_, ($_->orig_volume / $_->body_volume) ] }
-             grep { $_->articles >= 5 }
+             grep { $_->articles >= 3 }
              values %$threads )[0 .. 9];
 
     for (@top) {
-        last unless defined $_;
-
         printf "%.3f  (%5.1f/ %5.1f)  %5d  %s\n",
             $_->[1], $_->[0]->orig_volume / 1024,
             $_->[0]->body_volume / 1024,
@@ -492,8 +463,8 @@ EOBanner
     ## bottom OCR
     print <<EOBanner;
 
-Bottom 10 Threads by OCR (minimum of five posts)
-=================================================
+Bottom 10 Threads nach OCR (min. drei Postings)
+===============================================
 
          (kb)    (kb)
 OCR      orig /  body  Posts  Subject
@@ -503,27 +474,17 @@ EOBanner
 
     @top = ( sort { $a->[1] <=> $b->[1] }
              map  { [ $_, ($_->orig_volume / $_->body_volume) ] }
-             grep { $_->articles >= 5 }
+             grep { $_->articles >= 3 }
              values %$threads )[0 .. 9];
 
     for (reverse @top) {
-        next unless defined $_;
-
         printf "%.3f  (%5.1f /%5.1f)  %5d  %s\n",
             $_->[1], $_->[0]->orig_volume / 1024,
             $_->[0]->body_volume / 1024,
             $_->[0]->articles, $_->[0]->subject;
     }
 
-    my $total    = scalar keys %$threads; 
-    my $eligible = scalar grep { $_->articles >= 5 } values %$threads; 
-    my $pct      = sprintf "%d", 100 * $eligible / $total;
-
-    my $str      = $eligible == 1
-                   ? "One thread ($pct%)"
-                   : "$eligible threads ($pct%)";
-
-    print "\n$str had at least five posts.\n\n";
+    print "\n";
 }
 
 sub top_xposts {
@@ -534,11 +495,11 @@ sub top_xposts {
     local $_;
 
     print <<EOBanner;
-Top 10 Targets for Crossposts
-=============================
+Top 10 Crossposting Ziele
+=========================
 
-Articles  Newsgroup
---------  ---------
+Artikel   Newsgroup
+-------   ---------
 
 EOBanner
 
@@ -554,16 +515,15 @@ EOBanner
 
     print <<EOBanner;
 
-Top 10 Crossposters
-===================
+Top 10 Crossposter
+==================
 
-Articles  Address
---------  -------
+Artikel   Adresse
+-------   -------
 
 EOBanner
 
     @top = ( sort { $b->[1] <=> $a->[1] }
-             grep { $_->[1] > 0 }
              map  { [ $_, $_->crossposts ] }
              values %$posters )[0 .. 9];
 
