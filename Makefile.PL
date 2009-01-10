@@ -2,7 +2,7 @@
 
 require 5.004;
 
-$|++;
+$| = 1;
 
 ################################################################
 # check for non-standard required libraries
@@ -98,7 +98,7 @@ EOF
 ################################################################
 use ExtUtils::MakeMaker;
 
-$VERSION = '0.52';
+$VERSION = '0.53';
 
 sub MY::libscan {
     my($self, $path) = @_;

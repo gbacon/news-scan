@@ -1,9 +1,19 @@
-#! /usr/local/bin/perl5.00404 -w
+#! /usr/local/bin/perl -w
 
 use strict;
 
 use POSIX;
 use News::Scan;
+
+# e.g., $From = 'Stats Poster <stats@poster.com>';
+# this value will be used in print_header
+our $From;
+
+BEGIN {
+    unless ($From) {
+        die "\$From is empty";
+    }
+}
 
 ## subs
 sub in_kb {
@@ -102,8 +112,11 @@ sub print_header {
     my $earliest = strftime "%d %b %Y %H:%M:%S", gmtime($scan->earliest);
     my $latest   = strftime "%d %b %Y %H:%M:%S", gmtime($scan->latest);
 
+    my $year = (localtime)[5];
+    $year += 1900;
+
     print <<EOF;
-From: Greg Bacon <gbacon\@cs.uah.edu>
+From: $From
 Newsgroups: $group
 Subject: Statistics for $group
 
@@ -119,13 +132,13 @@ Notes
     - All text after the last cut line (/^-- \$/) in the body is
       considered to be the author's signature.
     - The scanner prefers the Reply-To: header over the From: header
-      in determining the "real" e-mail address and name.
+      in determining the "real" email address and name.
     - Original Content Rating (OCR) is the ratio of the original content
       volume to the total body volume.
     - Find the News-Scan distribution on the CPAN!
       <URL:http://www.perl.com/CPAN/modules/by-module/News/>
     - Please send all comments to Greg Bacon <gbacon\@cs.uah.edu>.
-    - Copyright (c) 1998 Greg Bacon.  All Rights Reserved.
+    - Copyright (c) $year Greg Bacon.
       Verbatim copying and redistribution is permitted without royalty;
       alteration is not permitted.  Redistribution and/or use for any
       commercial purpose is prohibited.
@@ -241,7 +254,7 @@ Posts per poster: $posts_avg
     s:      $psd post@{[$psd == 1 ? "" : "s"]}
 Posts per thread: $thr_avg
     median: $tmed post@{[$tmed == 1 ? "" : "s"]}
-    mode:   $tmode post@{[$tmode == 1 ? "" : "s"]} - $tmode_score thread@{[$tmode_score == 1 ? "" : "s"]}
+    mode:   $tmode post@{[$tmode eq 1 ? "" : "s"]} - $tmode_score thread@{[$tmode_score == 1 ? "" : "s"]}
     s:      $tsd post@{[$tsd == 1 ? "" : "s"]}
 Message size: $msg bytes
     - header:     $hdr bytes ($hdr_lines lines)
@@ -256,25 +269,31 @@ sub top_posters {
     my $scan = shift;
     my @top;
     my $top_total;
+    my $n;
+    my $l;
+
     local $_;
 
     my $posters = $scan->posters;
 
     ## by posts
+    @top = grep defined, ( map  { $_->[0] }
+                           sort { $b->[1] <=> $a->[1] }
+                           map  { [ $_, $_->articles ] }
+                           values %$posters )[0 .. 9];
+
+    $n = @top;
+    $l = '=' x length $n;
+
     print <<EOBanner;
-Top 10 Posters by Number of Posts
-=================================
+Top $n Posters by Number of Posts
+====$l===========================
 
          (kb)   (kb)  (kb)  (kb)
 Posts  Volume (  hdr/ body/ orig)  Address
 -----  --------------------------  -------
 
 EOBanner
-
-    @top = ( map  { $_->[0] }
-             sort { $b->[1] <=> $a->[1] }
-             map  { [ $_, $_->articles ] }
-             values %$posters )[0 .. 9];
 
     $top_total = 0;
     for (@top) {
@@ -296,21 +315,24 @@ EOBanner
         100 * $top_total / $scan->articles;
 
     ## by volume
+    @top = grep defined, ( map  { $_->[0] }
+                           sort { $b->[1] <=> $a->[1] }
+                           map  { [ $_, $_->volume ] }
+                           values %$posters )[0 .. 9];
+
+    $n = @top;
+    $l = '=' x length $n;
+
     print <<EOBanner;
 
-Top 10 Posters by Volume
-========================
+Top $n Posters by Volume
+====$l==================
 
   (kb)   (kb)  (kb)  (kb)
 Volume (  hdr/ body/ orig)  Posts  Address
 --------------------------  -----  -------
 
 EOBanner
-
-    @top = ( map  { $_->[0] }
-             sort { $b->[1] <=> $a->[1] }
-             map  { [ $_, $_->volume ] }
-             values %$posters )[0 .. 9];
 
     $top_total = 0;
     for (@top) {
@@ -331,22 +353,61 @@ EOBanner
     printf "\nThese posters accounted for %.1f%% of the total volume.\n",
         100 * $top_total / $scan->volume;
 
-    ## top OCR
+    ## top orig volume
+    @top = grep defined, ( sort { $b->[1] <=> $a->[1] }
+                           map  { [ $_, $_->orig_volume ] }
+                           grep { $_->articles >= 5 }
+                           values %$posters )[0 .. 9];
+
+    $n = @top;
+    $l = '=' x length $n;
+
     print <<EOBanner;
 
-Top 10 Posters by OCR (minimum of five posts)
-==============================================
+Top $n Posters by Volume of Original Content (min. five posts)
+====$l========================================================
+
+        (kb)
+Posts   orig  Address
+-----  -----  -------
+
+EOBanner
+
+    $top_total = 0;
+
+    for (@top) {
+        last unless defined $_;
+
+        printf "%5d  %5.1f  %s\n",
+               $_->[0]->articles,
+               $_->[0]->orig_volume / 1024,
+               $_->[0]->attrib;
+
+        $top_total += $_->[0]->orig_volume;
+    }
+
+    printf "\nThese posters accounted for %.1f%% of the original volume.\n",
+        100 * $top_total / $scan->orig_volume;
+
+    ## top OCR
+    @top = grep defined, ( sort { $b->[1] <=> $a->[1] }
+                           map  { [ $_, ($_->orig_volume / $_->body_volume) ] }
+                           grep { $_->articles >= 5 }
+                           values %$posters )[0 .. 9];
+
+    $n = @top;
+    $l = '=' x length $n;
+
+    print <<EOBanner;
+
+Top $n Posters by OCR (minimum of five posts)
+====$l========================================
 
          (kb)    (kb)
 OCR      orig /  body  Posts  Address
 -----  --------------  -----  -------
 
 EOBanner
-
-    @top = ( sort { $b->[1] <=> $a->[1] }
-             map  { [ $_, ($_->orig_volume / $_->body_volume) ] }
-             grep { $_->articles >= 5 }
-             values %$posters )[0 .. 9];
 
     for (@top) {
         last unless defined $_;
@@ -358,21 +419,24 @@ EOBanner
     }
 
     ## bottom OCR
+    @top = grep defined, ( sort { $a->[1] <=> $b->[1] }
+                           map  { [ $_, ($_->orig_volume / $_->body_volume) ] }
+                           grep { $_->articles >= 5 }
+                           values %$posters )[0 .. 9];
+
+    $n = @top;
+    $l = '=' x length $n;
+
     print <<EOBanner;
 
-Bottom 10 Posters by OCR (minimum of five posts)
-=================================================
+Bottom $n Posters by OCR (minimum of five posts)
+=======$l=======================================
 
          (kb)    (kb)
 OCR      orig /  body  Posts  Address
 -----  --------------  -----  -------
 
 EOBanner
-
-    @top = ( sort { $a->[1] <=> $b->[1] }
-             map  { [ $_, ($_->orig_volume / $_->body_volume) ] }
-             grep { $_->articles >= 5 }
-             values %$posters )[0 .. 9];
 
     for (reverse @top) {
         next unless defined $_;
@@ -399,22 +463,28 @@ sub top_threads {
     my @top;
     my $threads = $scan->threads;
     my $top_total;
+    my $n;
+    my $l;
+
     local $_;
 
     ## by posts
+    @top = grep defined, ( map  { $_->[0] }
+                           sort { $b->[1] <=> $a->[1] }
+                           map  { [ $_, $_->articles ] }
+                           values %$threads )[0 .. 9];
+
+    $n = @top;
+    $l = '=' x length $n;
+
     print <<EOBanner;
-Top 10 Threads by Number of Posts
-=================================
+Top $n Threads by Number of Posts
+====$l===========================
 
 Posts  Subject
 -----  -------
 
 EOBanner
-
-    @top = ( map  { $_->[0] }
-             sort { $b->[1] <=> $a->[1] }
-             map  { [ $_, $_->articles ] }
-             values %$threads )[0 .. 9];
 
     $top_total = 0;
     for (@top) {
@@ -428,21 +498,24 @@ EOBanner
         100 * $top_total / $scan->articles;
 
     ## by volume
+    @top = grep defined, ( map  { $_->[0] }
+                           sort { $b->[1] <=> $a->[1] }
+                           map  { [ $_, $_->volume ] }
+                           values %$threads )[0 .. 9];
+
+    $n = @top;
+    $l = '=' x length $n;
+
     print <<EOBanner;
 
-Top 10 Threads by Volume
-========================
+Top $n Threads by Volume
+====$l==================
 
   (kb)   (kb)  (kb)  (kb)
 Volume (  hdr/ body/ orig)  Posts  Subject
 --------------------------  -----  -------
 
 EOBanner
-
-    @top = ( map  { $_->[0] }
-             sort { $b->[1] <=> $a->[1] }
-             map  { [ $_, $_->volume ] }
-             values %$threads )[0 .. 9];
 
     $top_total = 0;
     for (@top) {
@@ -464,21 +537,24 @@ EOBanner
         100 * $top_total / $scan->volume;
 
     ## top OCR
+    @top = grep defined, ( sort { $b->[1] <=> $a->[1] }
+                           map  { [ $_, ($_->orig_volume / $_->body_volume) ] }
+                           grep { $_->articles >= 5 }
+                           values %$threads )[0 .. 9];
+
+    $n = @top;
+    $l = '=' x length $n;
+
     print <<EOBanner;
 
-Top 10 Threads by OCR (minimum of five posts)
-==============================================
+Top $n Threads by OCR (minimum of five posts)
+====$l=======================================
 
          (kb)    (kb)
 OCR      orig /  body  Posts  Subject
 -----  --------------  -----  -------
 
 EOBanner
-
-    @top = ( sort { $b->[1] <=> $a->[1] }
-             map  { [ $_, ($_->orig_volume / $_->body_volume) ] }
-             grep { $_->articles >= 5 }
-             values %$threads )[0 .. 9];
 
     for (@top) {
         last unless defined $_;
@@ -490,21 +566,24 @@ EOBanner
     }
 
     ## bottom OCR
+    @top = grep defined, ( sort { $a->[1] <=> $b->[1] }
+                           map  { [ $_, ($_->orig_volume / $_->body_volume) ] }
+                           grep { $_->articles >= 5 }
+                           values %$threads )[0 .. 9];
+
+    $n = @top;
+    $l = '=' x length $n;
+
     print <<EOBanner;
 
-Bottom 10 Threads by OCR (minimum of five posts)
-=================================================
+Bottom $n Threads by OCR (minimum of five posts)
+=======$l=======================================
 
          (kb)    (kb)
 OCR      orig /  body  Posts  Subject
 -----  --------------  -----  -------
 
 EOBanner
-
-    @top = ( sort { $a->[1] <=> $b->[1] }
-             map  { [ $_, ($_->orig_volume / $_->body_volume) ] }
-             grep { $_->articles >= 5 }
-             values %$threads )[0 .. 9];
 
     for (reverse @top) {
         next unless defined $_;
@@ -528,44 +607,53 @@ EOBanner
 
 sub top_xposts {
     my $scan = shift;
-    my @top;
     my $xposts = $scan->crossposts || return;
     my $posters = $scan->posters;
+    my @top;
+    my $n;
+    my $l;
+
     local $_;
 
+    @top = grep defined, ( sort { $b->[1] <=> $a->[1] }
+                           map  { [ $_, $xposts->{$_} ] }
+                           keys %$xposts )[0 .. 9];
+ 
+    $n = @top;
+    $l = '=' x length $n;
+
     print <<EOBanner;
-Top 10 Targets for Crossposts
-=============================
+Top $n Targets for Crossposts
+====$l=======================
 
 Articles  Newsgroup
 --------  ---------
 
 EOBanner
 
-    @top = ( sort { $b->[1] <=> $a->[1] }
-             map  { [ $_, $xposts->{$_} ] }
-             keys %$xposts )[0 .. 9];
- 
     for (@top) {
         next unless defined $_;
 
         printf "%8d  %s\n", $_->[1], $_->[0];
     }
 
+    @top = grep defined, ( sort { $b->[1] <=> $a->[1] }
+                           grep { $_->[1] > 0 }
+                           map  { [ $_, $_->crossposts ] }
+                           values %$posters )[0 .. 9];
+
+    $n = @top;
+    $l = '=' x length $n;
+
     print <<EOBanner;
 
-Top 10 Crossposters
-===================
+Top $n Crossposters
+====$l=============
 
 Articles  Address
 --------  -------
 
 EOBanner
-
-    @top = ( sort { $b->[1] <=> $a->[1] }
-             grep { $_->[1] > 0 }
-             map  { [ $_, $_->crossposts ] }
-             values %$posters )[0 .. 9];
 
     for (@top) {
         next unless defined $_;

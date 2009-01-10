@@ -6,21 +6,11 @@ use Data::Dumper 'DumperX';
 use News::Scan;
 
 my %aliases = (
-    'gbacon@adtran.com'                  => 'gbacon@cs.uah.edu',
-    'scribble@shoga.wwa.com'             => 'scribble@wwa.com',
-    'zawodny@hou.moc.com'                => 'jzawodn@wcnet.org',
-    'jgloudon@bbn.remove.com'            => 'jgloudon@bbn.com',
-    'mcafee@battlezone.rs.itd.umich.edu' => 'mcafee@rs.itd.umich.edu',
-    'mcafee@stargate.rs.itd.umich.edu'   => 'mcafee@rs.itd.umich.edu',
-    'mcafee@gorf.rs.itd.umich.edu'       => 'mcafee@rs.itd.umich.edu',
-    'pojo@gte.net.nospam'                => 'pojo@get.net',
-    'bholzman@mail.earthlink.net'        => 'bholzman@earthlink.net',
-    'keng@removethis.wco.com'            => 'keng@wco.com',
-    'keng@nospam.hybrid.com'             => 'keng@wco.com',
+    'gbacon@hiwaay.net' => 'gbacon@cs.uah.edu',
 );
 
 my @exclude = (
-    'perlfaq-suggestions\@mox\.perl\.com',
+    'perlfaq-suggestions\@(?:.*\.)?perl\.com',
 );
 
 my $HOME = $ENV{HOME} || '/';

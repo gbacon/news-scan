@@ -7,6 +7,7 @@ News/Scan/Poster.pm
 News/Scan/Thread.pm
 README
 TODO
+eg/README
 eg/avg-addy
 eg/empty-old
 eg/new-posters
@@ -15,3 +16,4 @@ eg/news-stats
 eg/news-stats.deutsch
 eg/nntpget
 eg/update-posters
+t/use.t

@@ -7,4 +7,9 @@ o Add a facility for composite statistics (i.e. stats over a month's
 
 o This should work for mailing lists too.
 
+o Limit News::Scan::collect to only in-range articles (perhaps by
+  using XHDR)
+
+o Lots of configurability and hooks
+
 o Probably lots more.. :-(

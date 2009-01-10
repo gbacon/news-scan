@@ -14,7 +14,7 @@ use News::Scan::Article;
 use News::Scan::Poster;
 use News::Scan::Thread;
 
-$VERSION = '0.51';
+$VERSION = '0.53';
 
 ## play a fun little game here
 my $Have_Net_NNTP = 0;
@@ -546,12 +546,21 @@ sub collect {
         close SEEN;
     }
 
-    for (grep { !-f "$spool/$_" && !$seen{$_} } @{$client->listgroup}) {
+    for (grep { !-f "$spool/$_" && !$seen{$_} } @{ $client->listgroup }) {
+        my $art = $client->article($_);
+        unless ($art) {
+            my $msg = $client->message;
+
+            warn "$0: $group:$_: $msg\n";
+
+            next;
+        }
+
         unless (open ART, ">$spool/$_") {
             return $self->error("Failed to save article");
         }
 
-        print ART @{ $client->article($_) };
+        print ART @$art;
         close ART;
     }
 
