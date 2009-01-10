@@ -1,0 +1,12 @@
+To Do:
+======
+
+o Add a facility for composite statistics (i.e. stats over a month's
+  worth of articles from scan's dumps without having to actually save
+  an entire's month's worth of articles).
+
+o New poster stats.
+
+o This should work for mailing lists too.
+
+o Probably lots more.. :-(

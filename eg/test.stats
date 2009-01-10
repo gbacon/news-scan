@@ -1,0 +1,233 @@
+From: Greg Bacon <gbacon@cs.uah.edu>
+Newsgroups: comp.lang.perl.misc
+Subject: Statistics for comp.lang.perl.misc
+
+Following is a summary of articles spanning a 7 day period,
+beginning at 10 Dec 1997 03:00:46 GMT and ending at
+15 Dec 1997 16:14:56 GMT.
+
+Notes
+=====
+
+    - A line in the body of a post is considered to be original if it
+      does *not* match the regular expression /^\s{0,3}(?:>|:|\S+>|\+\+)/.
+    - All text after the last cut line (/^-- $/) in the body is
+      considered to be the author's signature.
+    - The scanner prefers the Reply-To: header over the From: header
+      in determining the "real" e-mail address and name.
+    - Original Content Rating is the ratio of the original content volume
+      to the total body volume.
+    - Please send all comments to Greg Bacon <gbacon@cs.uah.edu>.
+
+Excluded Posters
+================
+
+perlfaq-suggestions\@mox\.perl\.com
+
+Totals
+======
+
+Posters:  246
+Articles: 480 (192 with cutlined signatures)
+Threads:  214
+Volume generated: 874.0 kb
+    - headers:    341.8 kb (6,735 lines)
+    - bodies:     493.7 kb (16,048 lines)
+    - original:   365.7 kb (12,780 lines)
+    - signatures: 38.1 kb (775 lines)
+
+Original Content Rating: 0.741
+
+Averages
+========
+
+Posts per poster: 2.0
+    median: 1.0 post
+    mode:   1 post - 178 posters
+    s:      3.9 posts
+Posts per thread: 2.2
+    median: 2.0 posts
+    mode:   1 post - 103 threads
+    s:      2.2 posts
+Message size: 1864.6 bytes
+    - header:     729.1 bytes (14.0 lines)
+    - body:       1053.2 bytes (33.4 lines)
+    - original:   780.1 bytes (26.6 lines)
+    - signature:  81.2 bytes (1.6 lines)
+
+Top 10 Posters by Number of Posts
+=================================
+
+         (kb)   (kb)  (kb)  (kb)
+Posts  Volume (  hdr/ body/ orig)  Address
+-----  --------------------------  -------
+
+   49    83.0 ( 41.7/ 31.2/ 18.5)  Tom Phoenix <rootbeer@teleport.com>
+   29    46.0 ( 21.7/ 18.4/ 10.5)  comdog@computerdog.com (brian d foy)
+   12    14.4 (  6.5/  7.9/  3.9)  scribble@tekka.wwa.com (Tushar Samant)
+   11    19.4 (  7.5/  9.7/  6.7)  mgjv@comdyn.com.au (Martien Verbruggen)
+   11    21.8 (  7.8/ 14.0/  8.4)  "Mark S. Reibert" <reibert@mystech.com>
+    8    13.4 (  7.5/  5.8/  1.5)  Nathan Stanford <nathan@cyberservices.com>
+    7    12.7 (  5.9/  5.8/  4.9)  tchrist@mox.perl.com (Tom Christiansen)
+    7    12.3 (  5.4/  4.7/  4.7)  bsa@void.apk.net (Brandon S. Allbery KF8NH; to reply, change "void" to "kf8nh")
+    7    14.6 (  3.7/ 10.8/  9.5)  aml@world.std.com (Andrew M. Langmead)
+    6    13.0 (  4.4/  6.5/  4.4)  Randal Schwartz <merlyn@stonehenge.com>
+
+Top 10 Posters by Volume
+========================
+
+  (kb)   (kb)  (kb)  (kb)
+Volume (  hdr/ body/ orig)  Posts  Address
+--------------------------  -----  -------
+
+  83.0 ( 41.7/ 31.2/ 18.5)     49  Tom Phoenix <rootbeer@teleport.com>
+  73.6 (  0.6/ 73.0/ 72.5)      1  gerlach@netcom.com (Matthew H. Gerlach)
+  46.0 ( 21.7/ 18.4/ 10.5)     29  comdog@computerdog.com (brian d foy)
+  21.8 (  7.8/ 14.0/  8.4)     11  "Mark S. Reibert" <reibert@mystech.com>
+  19.4 (  7.5/  9.7/  6.7)     11  mgjv@comdyn.com.au (Martien Verbruggen)
+  14.6 (  3.7/ 10.8/  9.5)      7  aml@world.std.com (Andrew M. Langmead)
+  14.4 (  6.5/  7.9/  3.9)     12  scribble@tekka.wwa.com (Tushar Samant)
+  13.4 (  7.5/  5.8/  1.5)      8  Nathan Stanford <nathan@cyberservices.com>
+  13.0 (  4.4/  6.5/  4.4)      6  Randal Schwartz <merlyn@stonehenge.com>
+  12.7 (  5.9/  5.8/  4.9)      7  tchrist@mox.perl.com (Tom Christiansen)
+
+Top 10 Posters by OCR (minimum of five posts)
+==============================================
+
+         (kb)    (kb)
+OCR      orig /  body  Posts  Address
+-----  --------------  -----  -------
+
+0.990  (  4.7 /  4.7)      7  bsa@void.apk.net (Brandon S. Allbery KF8NH; to reply, change "void" to "kf8nh")
+0.875  (  9.5 / 10.8)      7  aml@world.std.com (Andrew M. Langmead)
+0.851  (  4.9 /  5.8)      7  tchrist@mox.perl.com (Tom Christiansen)
+0.691  (  4.9 /  7.1)      6  Anthony David <adavid@netinfo.com.au>
+0.688  (  6.7 /  9.7)     11  mgjv@comdyn.com.au (Martien Verbruggen)
+0.681  (  4.4 /  6.5)      6  Randal Schwartz <merlyn@stonehenge.com>
+0.601  (  8.4 / 14.0)     11  "Mark S. Reibert" <reibert@mystech.com>
+0.593  ( 18.5 / 31.2)     49  Tom Phoenix <rootbeer@teleport.com>
+0.588  (  1.8 /  3.1)      6  bowlin@sirius.com
+0.583  (  1.6 /  2.8)      6  Zenin <zenin@best.com>
+
+Bottom 10 Posters by OCR (minimum of five posts)
+=================================================
+
+         (kb)    (kb)
+OCR      orig /  body  Posts  Address
+-----  --------------  -----  -------
+
+0.688  (  6.7 /  9.7)     11  mgjv@comdyn.com.au (Martien Verbruggen)
+0.681  (  4.4 /  6.5)      6  Randal Schwartz <merlyn@stonehenge.com>
+0.601  (  8.4 / 14.0)     11  "Mark S. Reibert" <reibert@mystech.com>
+0.593  ( 18.5 / 31.2)     49  Tom Phoenix <rootbeer@teleport.com>
+0.588  (  1.8 /  3.1)      6  bowlin@sirius.com
+0.583  (  1.6 /  2.8)      6  Zenin <zenin@best.com>
+0.570  ( 10.5 / 18.4)     29  comdog@computerdog.com (brian d foy)
+0.540  (  3.6 /  6.6)      5  tadmc@metronet.com (Tad McClellan)
+0.493  (  3.9 /  7.9)     12  scribble@tekka.wwa.com (Tushar Samant)
+0.259  (  1.5 /  5.8)      8  Nathan Stanford <nathan@cyberservices.com>
+
+Top 10 Threads by Number of Posts
+=================================
+
+Posts  Subject
+-----  -------
+
+   13  Re: Which language pays most 17457 -- C++ vs. Java?
+   11  Re: newbie: compact an array
+   10  Re: a certain bug...!!!
+    8  just starting with perl
+    7  Re: pgp encrypion via perl script
+    7  A ^M question.
+    7  Re: mkdir command
+    6  Re: what does qq() do?
+    6  Re: need to know what browser the client is using
+    5  Another Sort problem, this time with numbers
+
+Top 10 Threads by Volume
+========================
+
+  (kb)   (kb)  (kb)  (kb)
+Volume (  hdr/ body/ orig)  Posts  Subject
+--------------------------  -----  -------
+
+  75.9 (  1.2/ 74.7/ 74.2)      2  Reading from a modem in Perl/Linux
+  30.6 ( 13.0/ 17.2/ 10.5)     13  Re: Which language pays most 17457 -- C++ vs. Java?
+  16.3 (  5.4/ 10.5/  6.8)      8  just starting with perl
+  15.3 (  5.0/  9.4/  6.4)      7  Re: pgp encrypion via perl script
+  14.8 (  7.5/  5.9/  3.7)     10  Re: a certain bug...!!!
+  14.5 (  8.3/  5.3/  2.2)     11  Re: newbie: compact an array
+  14.1 (  4.1/  9.8/  5.8)      5  Re: Perl support for the long long type
+  13.8 (  3.4/ 10.2/  7.8)      5  Another Sort problem, this time with numbers
+  13.3 (  3.2/  8.7/  7.6)      5  Teaching programing
+  11.1 (  4.4/  6.0/  3.3)      6  Re: need to know what browser the client is using
+
+Top 10 Threads by OCR (minimum of three posts)
+==============================================
+
+         (kb)    (kb)
+OCR      orig /  body  Posts  Subject
+-----  --------------  -----  -------
+
+0.935  (  0.9/   1.0)      3  Most Common Web dev tools?
+0.914  (  6.3/   6.9)      4  Re: Shoving an array into a glob? or fixing IO::ScalarArray
+0.907  (  4.3/   4.7)      5  Re: removing duplicate entries from the PATH variable
+0.887  (  2.1/   2.4)      3  Re: perl program very slow
+0.869  (  3.8/   4.3)      3  Apparent Infinite Loop When Redirecting Output
+0.868  (  7.6/   8.7)      5  Teaching programing
+0.858  (  4.1/   4.8)      3  Memory leak in perl 5.004_04
+0.852  (  3.4/   3.9)      5  Encryption
+0.839  (  2.1/   2.5)      3  Re: Help for newbie perl scripter
+0.831  (  3.3/   3.9)      3  failed to close pipe into sendmail
+
+Bottom 10 Threads by OCR (minimum of three posts)
+=================================================
+
+         (kb)    (kb)
+OCR      orig /  body  Posts  Subject
+-----  --------------  -----  -------
+
+0.572  (  2.0 /  3.5)      3  To use a ref or not?
+0.565  (  1.3 /  2.3)      5  Part of a line
+0.554  (  0.8 /  1.4)      3  Re: how to hide .pl file
+0.554  (  2.1 /  3.8)      3  Re: PERL CGI Parsing
+0.547  (  1.7 /  3.2)      5  Re: There's More Than One Way?
+0.543  (  3.3 /  6.0)      6  Re: need to know what browser the client is using
+0.515  (  3.1 /  6.0)      5  Memory leak (perl 5.004_04)
+0.508  (  1.2 /  2.3)      4  Re: Download Question - Yes Please
+0.467  (  0.9 /  2.0)      3  Re: using PERL with Personal Web server under 95
+0.410  (  2.2 /  5.3)     11  Re: newbie: compact an array
+
+Top 10 Targets for Crossposts
+=============================
+
+Articles  Newsgroup
+--------  ---------
+
+      13  comp.edu
+      13  comp.lang.smalltalk
+      13  comp.lang.ada
+      13  comp.lang.java.programmer
+      12  comp.lang.fortran
+      12  comp.lang.eiffel
+      12  misc.jobs.misc
+      12  comp.lang.c++
+      12  comp.lang.c
+      10  comp.lang.perl.modules
+
+Top 10 Crossposters
+===================
+
+Articles  Address
+--------  -------
+
+      13  Roedy Green <roedy@BIX.com>
+      10  tholen@ifa.hawaii.edu
+      10  gschwarz@netup.cl
+      10  seebs@plethora.net (Peter Seebach)
+      10  "John W. Sublett" <john@tridium.com>
+      10  Mix <mixmaster@remail.obscura.com>
+      10  mcv@wxs.nl
+      10  dewar@merv.cs.nyu.edu (Robert Dewar)
+      10  mdkersey@hal-pc.org
+      10  grunes@imsy1.nrl.navy.mil (Mitchell R Grunes)

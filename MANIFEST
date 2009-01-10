@@ -1,0 +1,14 @@
+Changes
+MANIFEST
+Makefile.PL
+News/Scan.pm
+News/Scan/Article.pm
+News/Scan/Poster.pm
+News/Scan/Thread.pm
+README
+TODO
+eg/news-scan
+eg/news-stats
+eg/nntpget
+eg/test.dump
+eg/test.stats

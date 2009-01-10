@@ -1,0 +1,10 @@
+Revision History for Perl extension News-Scan.
+
+0.50  Tue Dec 16 17:32:52 CST 1997
+
+	- first release to CPAN
+
+0.51  Wed Dec 17 07:45:25 CST 1997
+
+	- fixed some really embarassing bugs
+	- minor changes to the stats script

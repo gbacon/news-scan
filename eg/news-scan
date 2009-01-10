@@ -1,0 +1,50 @@
+#! /usr/bin/perl -w
+
+use strict;
+
+use Data::Dumper 'DumperX';
+use News::Scan;
+
+my %aliases = (
+    'gbacon@adtran.com'                  => 'gbacon@cs.uah.edu',
+    'scribble@shoga.wwa.com'             => 'scribble@wwa.com',
+    'zawodny@hou.moc.com'                => 'jzawodn@wcnet.org',
+    'jgloudon@bbn.remove.com'            => 'jgloudon@bbn.com',
+    'mcafee@battlezone.rs.itd.umich.edu' => 'mcafee@rs.itd.umich.edu',
+    'mcafee@stargate.rs.itd.umich.edu'   => 'mcafee@rs.itd.umich.edu',
+    'mcafee@gorf.rs.itd.umich.edu'       => 'mcafee@rs.itd.umich.edu',
+    'pojo@gte.net.nospam'                => 'pojo@get.net',
+    'bholzman@mail.earthlink.net'        => 'bholzman@earthlink.net',
+    'keng@removethis.wco.com'            => 'keng@wco.com',
+    'keng@nospam.hybrid.com'             => 'keng@wco.com',
+);
+
+my @exclude = (
+    'perlfaq-suggestions\@mox\.perl\.com',
+);
+
+my $scan = new News::Scan Group   => 'comp.lang.perl.misc',
+                          Spool   => '/home/gbacon/spool/comp.lang.perl.misc',
+                          Period  => 7,
+                          Aliases => \%aliases,
+                          Exclude => \@exclude,
+                          From    => 'spool';
+
+unless (defined $scan) {
+    die "$0: Failed to create News::Scan object!\n";
+}
+elsif ($scan->error) {
+    die "$0: Error: " . $scan->error . "\n";
+}
+
+$scan->scan;
+if ($scan->error) {
+    die "$0: Error: " . $scan->error . "\n";
+}
+
+$Data::Dumper::Indent = 0;  ## minimal whitespace
+$Data::Dumper::Purity = 1;  ## get correct topology at any cost
+
+print DumperX $scan;
+
+exit;
